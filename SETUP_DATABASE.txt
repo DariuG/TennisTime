@@ -1,0 +1,88 @@
+1. install postgres: (Latest version): https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+
+2. Adauga filepath-ul spre bin de unde s-a instalat postgres in variabila de Path a System variables:
+
+3. In terminal:
+   "psql -U postgres
+   CREATE DATABASE tennis_time;"
+
+4. tot in terminal, crearea de tabele:
+"
+\c tennis_time
+CREATE TABLE IF NOT EXISTS public.admins
+(
+    id integer NOT NULL DEFAULT nextval('admins_id_seq'::regclass),
+    username text COLLATE pg_catalog."default" NOT NULL,
+    password_hash text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT admins_pkey PRIMARY KEY (id),
+    CONSTRAINT admins_username_key UNIQUE (username)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.admins
+    OWNER to postgres;
+
+--------------------------------------------
+
+CREATE TABLE IF NOT EXISTS public.sports_complexes
+(
+    id integer NOT NULL DEFAULT nextval('sports_complexes_id_seq'::regclass),
+    name character varying(100) COLLATE pg_catalog."default",
+    location character varying(100) COLLATE pg_catalog."default",
+    description text COLLATE pg_catalog."default",
+    image_url text COLLATE pg_catalog."default",
+    CONSTRAINT sports_complexes_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.sports_complexes
+    OWNER to postgres;
+
+----------------------------------------------
+
+CREATE TABLE IF NOT EXISTS public.courts
+(
+    id integer NOT NULL DEFAULT nextval('courts_id_seq'::regclass),
+    name character varying(100) COLLATE pg_catalog."default",
+    description text COLLATE pg_catalog."default",
+    sports_complex_id integer,
+    image_url text COLLATE pg_catalog."default",
+    CONSTRAINT courts_pkey PRIMARY KEY (id),
+    CONSTRAINT courts_sports_complex_id_fkey FOREIGN KEY (sports_complex_id)
+        REFERENCES public.sports_complexes (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.courts
+    OWNER to postgres;
+
+-------------------------------------------
+
+CREATE TABLE IF NOT EXISTS public.reservations
+(
+    id integer NOT NULL DEFAULT nextval('reservations_id_seq'::regclass),
+    court_id integer,
+    user_name character varying(100) COLLATE pg_catalog."default",
+    user_email character varying(100) COLLATE pg_catalog."default",
+    start_time timestamp with time zone,
+    end_time timestamp with time zone,
+    pin character varying(6) COLLATE pg_catalog."default",
+    confirmation_token uuid,
+    confirmed boolean DEFAULT false,
+    created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT reservations_pkey PRIMARY KEY (id),
+    CONSTRAINT reservations_court_id_fkey FOREIGN KEY (court_id)
+        REFERENCES public.courts (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.reservations
+    OWNER to postgres;
