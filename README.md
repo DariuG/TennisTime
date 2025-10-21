@@ -32,7 +32,6 @@ npm install
 
 3. Create a backend/.env file:
 
-
 DATABASE_URL=
 DB_USER=
 DB_PASSWORD=
@@ -45,9 +44,7 @@ MAILTRAP_PASS=
 BASE_URL=http://localhost:3000
 BACKEND_URL=http://localhost:5000
 
-4. Run backend/createAdmin.js
-
-input a username and a password to create your admin
+4. Run: node backend/createAdmin.js and input a username and a password to create your admin
 
 5.  Run in terminal:
 
