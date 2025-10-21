@@ -18,7 +18,7 @@ A full-stack web application that allows users to view available tennis courts, 
 - View and manage all reservations.
 - Set time slot intervals/holidays per court and sport complex.
 
-TO RUN THE APPLICATION:
+# TO RUN THE APPLICATION:
 
 1.  Run in terminal:
 
@@ -32,7 +32,6 @@ npm install
 
 3. Create a backend/.env file:
 
-# backend/.env
 
 DATABASE_URL=
 DB_USER=
